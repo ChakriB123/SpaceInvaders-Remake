@@ -1,0 +1,1007 @@
+<html>
+
+      <canvas id="mycanvas" width="900" height="700" style="border: 3px solid black"></canvas>
+    
+  <script>
+
+    var g_Canvas = document.getElementById("mycanvas");
+    var g_Ctx = g_Canvas.getContext("2d");
+      
+    var g_FrameRate = 30;
+    var g_TimeInterval = 1000/g_FrameRate;
+      
+    var IsRightKeyActive = 0;
+    var IsLeftKeyActive = 0;
+    var IsSpaceBarActive = 0;
+      
+     
+         var AlienArray1a = [0,0,1,0,0,0,0,0,1,0,0,
+                             0,0,0,1,0,0,0,1,0,0,0,
+                             0,0,1,1,1,1,1,1,1,0,0,
+                             0,1,1,0,1,1,1,0,1,1,0,
+                             1,1,1,1,1,1,1,1,1,1,1,
+                             1,0,1,1,1,1,1,1,1,0,1,
+                             1,0,1,0,0,0,0,0,1,0,1,
+                             0,0,0,1,1,0,1,1,0,0,0];
+      
+         var AlienArray1b = [0,0,1,0,0,0,0,0,1,0,0,
+                             1,0,0,1,0,0,0,1,0,0,1,
+                             1,0,1,1,1,1,1,1,1,0,1,
+                             1,1,1,0,1,1,1,0,1,1,1,
+                             0,1,1,1,1,1,1,1,1,1,0,
+                             0,0,1,1,1,1,1,1,1,0,0,
+                             0,0,1,0,0,1,0,0,1,0,0,
+                             1,1,0,0,0,0,0,0,0,1,1];
+      
+      
+    var AlienShipDestroy =  [0,0,0,0,0,0,0,0,0,0,0,
+                             0,0,0,0,0,0,0,0,0,0,0,
+                             0,0,0,0,0,1,0,0,0,0,0,
+                             0,0,0,0,0,1,0,0,0,0,0,
+                             0,0,0,0,0,1,0,0,0,0,0,
+                             0,0,0,0,0,1,0,0,0,0,0,
+                             0,0,0,0,0,0,0,0,0,0,0,
+                             0,0,0,0,0,0,0,0,0,0,0];
+      
+      
+    var AlienArray1 = new Array(2);
+      AlienArray1[0] = AlienArray1a;
+      AlienArray1[1] = AlienArray1b;
+
+      
+         var AlienArray2b=  [0,0,0,0,1,1,1,0,0,0,0,
+                             0,1,1,1,1,1,1,1,1,1,0,
+                             1,1,1,1,1,1,1,1,1,1,1,
+                             1,1,1,0,0,1,0,0,1,1,1,
+                             0,1,1,1,1,1,1,1,1,1,0,
+                             0,0,0,1,1,0,1,1,0,0,0,
+                             0,0,1,1,0,1,0,1,1,0,0,
+                             1,1,0,0,0,0,0,0,0,1,1];
+      
+         var AlienArray2a = [0,0,0,0,1,1,1,0,0,0,0,
+                             0,1,1,1,1,1,1,1,1,1,0,
+                             1,1,1,1,1,1,1,1,1,1,1,
+                             1,1,1,0,0,1,0,0,1,1,1,
+                             0,1,1,1,1,1,1,1,1,1,0,
+                             0,0,0,1,1,1,1,1,0,0,0,
+                             0,0,1,1,0,0,0,1,1,0,0,
+                             0,0,0,1,1,0,1,1,0,0,0];
+      
+      var AlienArray2 = new Array(2);
+      AlienArray2[0] = AlienArray2a;
+      AlienArray2[1] = AlienArray2b;
+
+      
+         var AlienArray3a = [0,0,0,1,0,0,0,1,0,0,0,
+                             0,0,0,0,1,1,1,0,0,0,0,
+                             0,1,0,1,1,1,1,1,0,1,0,
+                             0,1,1,0,1,1,1,0,1,1,0,
+                             0,1,0,1,1,1,1,1,0,1,0,
+                             0,1,0,0,1,1,1,0,0,1,0,
+                             0,1,1,0,0,0,0,0,1,1,0]; 
+      
+         var AlienArray3b = [1,1,0,0,1,0,1,0,0,1,1,
+                             0,1,0,0,1,1,1,0,0,1,0,
+                             0,1,0,1,1,1,1,1,0,1,0,
+                             0,1,1,0,1,1,1,0,1,1,0,
+                             0,1,0,1,1,1,1,1,0,1,0,
+                             0,0,0,0,1,0,1,0,0,0,0,
+                             0,0,0,0,0,0,0,0,0,0,0]; 
+      
+      var AlienArray3 = new Array(2);
+      AlienArray3[0] = AlienArray3a;
+      AlienArray3[1] = AlienArray3b;
+      
+      
+      
+      
+         var AlienArray4 =  [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,
+                             0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,
+                             0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,
+                             0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,
+                             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                             0,0,1,1,1,0,0,1,1,0,0,1,1,1,0,0,
+                             0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,
+                             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      
+       
+      
+        
+    
+         var Shield_Array_1 =[0,0,0,0,0,1,1,1,1,1,
+                              0,0,0,0,1,1,1,1,1,1,
+                              0,0,0,1,1,1,1,1,1,1,
+                              0,0,1,1,1,1,1,1,1,1,
+                              0,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1];
+        
+         var Shield_Array_2 =[1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1];
+
+         var Shield_Array_3 =[1,1,1,1,1,0,0,0,0,0,
+                              1,1,1,1,1,1,0,0,0,0,
+                              1,1,1,1,1,1,1,0,0,0,
+                              1,1,1,1,1,1,1,1,0,0,
+                              1,1,1,1,1,1,1,1,1,0,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1];
+      
+      var ShieldDestroyed1 =  [0,1,0,0,1,0,1,1,1,1,
+                               1,0,0,1,0,1,1,0,1,0,
+                               1,1,0,1,1,1,1,0,1,0,
+                               0,1,1,1,1,0,1,0,0,1,
+                               0,1,1,0,1,0,1,1,0,1,
+                               1,0,0,1,1,0,1,1,1,0,
+                               1,1,1,1,1,1,1,1,1,1,
+                               1,0,1,1,0,0,0,1,0,0,
+                               0,0,1,1,0,1,1,1,1,1,
+                               1,0,1,0,1,1,0,1,0,1];
+      
+      var ShieldDestroyed2 =  [0,0,0,0,1,0,1,0,0,0,
+                               0,0,0,1,0,1,1,0,0,0,
+                               0,0,0,1,0,1,1,0,0,0,
+                               0,1,1,1,1,0,1,0,0,1,
+                               0,0,1,0,1,0,1,1,0,0,
+                               1,0,0,1,0,0,1,1,1,0,
+                               1,1,0,1,0,1,1,1,1,1,
+                               1,0,1,1,0,0,0,1,0,0,
+                               0,0,0,1,0,1,1,1,1,1,
+                               1,0,1,0,1,1,0,1,0,1];
+      
+      var ShieldDestroyed3 =  [0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0,
+                               0,0,0,0,0,0,0,0,0,0];
+
+
+         var SpaceShipArrayB =[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+                              0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+                              0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
+                              0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,
+                              0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,
+                              0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,
+                              0,0,0,0,0,1,1,1,0,1,1,1,0,0,0,0,0,
+                              0,0,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,
+                              0,0,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,
+                              0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,0,
+                              0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,0,
+                              1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                              1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                              0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,0,
+                              0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,
+                              0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,]
+         
+         
+        var AlienShip_blast1 = [0,0,0,0,0,1,1,1,0,0,1,0,0,0,0,0,
+                                0,0,0,1,1,1,1,1,1,1,1,0,1,0,0,0,
+                                0,0,1,0,1,1,1,0,1,1,1,1,1,1,0,0,
+                                0,1,0,0,1,1,0,1,0,0,1,1,0,1,1,0,
+                                1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,
+                                0,0,1,1,1,0,0,1,1,0,0,1,1,1,0,0,
+                                0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      
+        var AlienShip_blast2 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+         
+         
+         
+
+  class C_Bullet
+      {
+          constructor(BulletXpos,BulletYpos,colour,BoxSpeed)
+          {
+
+                  this.Bullet_Xpos = BulletXpos;
+                  this.Bullet_Ypos = BulletYpos;
+                  this.Bullet_XSize = 5;
+                  this.Bullet_YSize = 10;
+                  this.Bullet_Speed = BoxSpeed;
+                  this.colour = colour; 
+                  this.IsBulletActive = 0;
+
+
+
+          }
+              
+        m_DrawBullet(l_Ctx)
+         {
+            if(this.IsBulletActive == 1)
+                {
+                   l_Ctx.fillStyle = this.colour;
+                   l_Ctx.fillRect(this.Bullet_Xpos,this.Bullet_Ypos,this.Bullet_XSize,this.Bullet_YSize);
+                }
+
+         } 
+          m_MoveBullet()
+          {
+              if(this.IsBulletActive == 1)
+                {
+              
+                   this.Bullet_Ypos -= this.Bullet_Speed;
+
+                  if(this.Bullet_Ypos < 0)
+                      {
+                            this.IsBulletActive = 0;
+                      }
+                }
+              
+          }
+          
+      }
+      
+      
+      class C_Box
+          {
+              constructor(BoxXpos,BoxYpos,colour)
+              {
+                  
+                      this.Box_Xpos = BoxXpos;
+                      this.Box_Ypos = BoxYpos;
+                      this.Box_Size = 5;
+                      this.colour = colour; 
+                      
+                  
+              }
+              
+              m_DrawBox(l_Ctx)
+              {
+                
+                  l_Ctx.fillStyle = this.colour;
+                  l_Ctx.fillRect(this.Box_Xpos,this.Box_Ypos,this.Box_Size,this.Box_Size);
+                  
+              }
+              
+              
+          }
+      
+    
+      
+      
+      class C_Grid
+          {
+              constructor(row,Column,xpos,ypos,size,colour)
+              {
+                  this.Row = row;
+                  this.Column = Column;
+                  this.BoxGrid_Xpos = xpos;
+                  this.BoxGrid_Ypos = ypos;
+                  this.BoxGrid_Size = size;
+                  this.shouldAnimate = 0;
+                  this.AnimationIndex = 0;
+                  this.BoxColour = colour;
+                  
+                  this.IsDestroyed = 0;
+                  this.IsDamaged = 0;
+                  this.BitMapArray ;
+                  this.GridArray = new Array(this.Row * this.Column);
+                  
+                  this.Height = row * size;
+                  this.Width = Column * size;
+                  
+                  this.m_CreateGrid();
+                  
+                  
+                 
+              }
+              
+             m_CreateGrid()
+              {
+                  
+                  var l_Index = 0;
+      
+                  var l_DistBtw_Xpos = 0;
+                  var l_DistBtw_Ypos = 0;
+                  
+              for(var i = 0; i<this.Row; i++)
+                  {
+                    for(var j =0; j<this.Column; j++)
+                     {
+                         l_DistBtw_Xpos = this.BoxGrid_Xpos + this.BoxGrid_Size *j; 
+                         l_DistBtw_Ypos = this.BoxGrid_Ypos + this.BoxGrid_Size *i;
+                         
+                         this.GridArray[l_Index] = new C_Box(l_DistBtw_Xpos,l_DistBtw_Ypos,this.BoxColour);
+                         
+                         l_Index++
+                      
+                     }
+                  } 
+                  
+                
+              }
+              
+              m_DrawGrid(l_Ctx)
+              {
+                  if(this.shouldAnimate == 1)
+                      {
+                          if(AlienTimer%20 == 0)
+                              {
+                                 this.AnimationIndex += 1;
+                              }
+                          if(AlienTimer%40 == 0)
+                              {
+                                 this.AnimationIndex = 0;
+                              }
+        
+                         
+                              for(var i =0; i<this.BitMapArray[this.AnimationIndex].length; i++)
+                                  {
+
+                                      if(this.BitMapArray[this.AnimationIndex][i] == 1 )
+                                              {
+                                                  this.GridArray[i].m_DrawBox(l_Ctx)
+                                              } 
+
+                                  }
+                    
+                        
+                      }
+                  else
+                      {
+                          
+                          for(var i =0; i<this.BitMapArray.length; i++)
+                          {
+                              if(this.BitMapArray[i] == 1 )
+                                      {
+                                          this.GridArray[i].m_DrawBox(l_Ctx)
+                                      }
+                          }
+                          
+                      }
+                  
+              }
+              
+               m_Move(l_SpeedX,l_SpeedY)
+                  {
+                       for(var i = 0; i < this.GridArray.length; i++)
+                         {     
+                             this.GridArray[i].Box_Xpos += l_SpeedX;
+                             this.GridArray[i].Box_Ypos += l_SpeedY;
+                         }
+                  }
+              
+              
+          }
+      
+      
+                  var AlIndex = 0;
+      
+                  var DistBtwAliens_Xpos = 0;
+                  var DistBtwAliens_Ypos = 0;
+                  var AlienObjArray = new Array();
+      
+      f_CreateAllAliens(9,5); 
+      
+      
+     function f_CreateAllAliens(l_Row,l_Column)
+      {
+          for(var j =0; j<l_Row; j++)
+              {
+
+                  for(var i =0; i<l_Column; i++)
+                      {
+                          
+                           DistBtwAliens_Xpos = 20 + 70*j; 
+                           DistBtwAliens_Ypos = 100 + 60*i;
+                          
+                            AlienObjArray[AlIndex] = new C_Grid(8,11,DistBtwAliens_Xpos,DistBtwAliens_Ypos,4);
+                          
+                          if(i == 0 || i == 4)
+                              {
+                                  AlienObjArray[AlIndex].BoxColour = "#4eff00"
+                                  AlienObjArray[AlIndex].BitMapArray = AlienArray1;
+                                  AlienObjArray[AlIndex].shouldAnimate = 1;
+                                  AlienObjArray[AlIndex].m_CreateGrid();
+                              }
+                          
+                          if(i == 1 || i == 3)
+                              {
+                                  AlienObjArray[AlIndex].BoxColour = "rgb(255, 0, 196)"
+                                  AlienObjArray[AlIndex].BitMapArray = AlienArray2;
+                                  AlienObjArray[AlIndex].shouldAnimate = 1;
+                                  AlienObjArray[AlIndex].m_CreateGrid();
+                              }
+                          
+                           if(i == 2)
+                              {
+                                  AlienObjArray[AlIndex].BoxColour = "#e6002c"
+                                  AlienObjArray[AlIndex].BitMapArray = AlienArray3;
+                                  AlienObjArray[AlIndex].shouldAnimate = 1;
+                                  AlienObjArray[AlIndex].m_CreateGrid();
+                              }
+                            
+                                  AlIndex++
+                       }
+                  
+                  
+              }
+          
+      }
+      
+          function f_DrawAllAliens(l_Ctx)
+          {
+              for(var i =0; i < AlienObjArray.length; i++)
+                 {
+                      AlienObjArray[i].m_DrawGrid(l_Ctx);          
+                 }
+          }
+      
+     
+      
+      
+      
+            var Shield_Row = 2;
+            var Shield_Col = 3;
+      
+              
+                  var Bunker_1 = new Array((Shield_Row*Shield_Col)-1);
+                  var Bunker_2 = new Array((Shield_Row*Shield_Col)-1);
+                  var Bunker_3 = new Array((Shield_Row*Shield_Col)-1);
+      
+      
+      
+      f_CreateAllBunker(Bunker_1,100,480);
+      f_CreateAllBunker(Bunker_2,400,480);
+      f_CreateAllBunker(Bunker_3,700,480);
+     
+      
+      function f_CreateAllBunker(l_BunkerArray,l_StartX,l_StartY)
+      {
+                  var l_Index = 0;
+                  var l_Xpos = l_StartX;
+                  var l_Ypos = l_StartY;
+          
+      for(var j =0; j<Shield_Row; j++)
+          {
+                     
+             for(var i =0; i<Shield_Col; i++)
+                {
+                    if(j == 1 && i == 1) 
+                         {
+                                 l_Xpos += 50;
+                                 continue;
+                         }
+                         
+                 l_BunkerArray[l_Index] = new C_Grid(10,10,l_Xpos,l_Ypos,5,"grey");
+                 l_BunkerArray[l_Index].BitMapArray = Shield_Array_2;
+
+
+                  if(i == 0 && j == 0)
+                      {
+                          l_BunkerArray[l_Index].BitMapArray = Shield_Array_1;
+
+                      }
+
+              else if(i == 2 && j == 0)
+                      {
+                          l_BunkerArray[l_Index].BitMapArray = Shield_Array_3;
+                      }
+
+                  else
+                      {
+                         l_BunkerArray[l_Index].BitMapArray = Shield_Array_2; 
+                      }
+
+                           
+                         
+                       l_Index++;
+                          
+                       l_Xpos += 50;
+                                  
+                      }
+                  l_Xpos = l_StartX;
+                  l_Ypos += 40;
+              }
+        }
+      
+      
+      function f_DrawBunkers()
+        {
+            for(var i = 0; i<Bunker_1.length; i++)
+                {
+                    Bunker_1[i].m_DrawGrid(g_Ctx);
+                }
+            
+            for(var i = 0; i<Bunker_2.length; i++)
+                {
+                    Bunker_2[i].m_DrawGrid(g_Ctx);
+                }
+            
+            for(var i = 0; i<Bunker_3.length; i++)
+                {
+                    Bunker_3[i].m_DrawGrid(g_Ctx);
+                }
+        }
+      
+      function f_ClearRect()
+        {
+                   g_Ctx.clearRect(0,0,g_Canvas.width,g_Canvas.height);
+                   g_Ctx.fillStyle = "black"
+                   g_Ctx.fillRect(0,0,g_Canvas.width,g_Canvas.height);
+        }
+      
+      
+  
+      
+        var AlienShip = new C_Grid(8,16,0,40,4,"#00d8ff");
+                      AlienShip.m_CreateGrid();
+                      AlienShip.BitMapArray = AlienArray4;
+
+       
+        var SpaceShip = new C_Grid(17,17,400,620,4,"orange");
+                      SpaceShip.m_CreateGrid();
+                      SpaceShip.BitMapArray = SpaceShipArrayB;
+      
+       
+                  
+     
+      var BulletArray = new Array(2);
+      
+      function f_CreateBullet()
+        {
+           for(var i = 0; i< BulletArray.length; i++)
+              {
+                  BulletArray[i] =  new C_Bullet(500,500,"yellow",20);
+              }
+        }
+     
+       function f_MoveBullet()
+        {
+          
+            
+           for(var i = 0; i < BulletArray.length; i++)
+               {
+                     BulletArray[i].m_MoveBullet(); 
+               }
+          
+               
+        }
+      
+      function f_DrawBullet()
+        {
+            for(var i = 0; i < BulletArray.length; i++)
+               {
+                  BulletArray[i].m_DrawBullet(g_Ctx);
+               }
+        }
+        
+      
+        function f_ActiveBullet()
+        {
+            
+            for(i = 0; i< BulletArray.length; i++)
+                {
+                    if(BulletArray[i].IsBulletActive == 0)
+                        {
+                            BulletArray[i].IsBulletActive = 1;
+
+                            BulletArray[i].Bullet_Xpos = SpaceShip.GridArray[8].Box_Xpos;
+                            BulletArray[i].Bullet_Ypos = SpaceShip.GridArray[1].Box_Ypos;
+                            break;
+
+                        }
+
+                }
+            
+        }
+      
+       f_CreateBullet();
+      
+     // ---------------------------------------------------------------------------
+      
+      
+      var AlienBulletArray = new Array(5);
+      
+      function f_CreateAlienBullet()
+        {
+           for(var i = 0; i< AlienBulletArray.length; i++)
+              {
+                  AlienBulletArray[i] =  new C_Bullet(500,500,"yellow",20);
+              }
+        }
+     
+       function f_MoveAlienBullet()
+        {
+          
+            
+           for(var i = 0; i < AlienBulletArray.length; i++)
+               {
+                     AlienBulletArray[i].m_MoveAlienBullet(); 
+               }
+          
+               
+        }
+      
+      function f_DrawAlienBullet()
+        {
+            for(var i = 0; i < AlienBulletArray.length; i++)
+               {
+                  AlienBulletArray[i].m_DrawAlienBullet(g_Ctx);
+               }
+        }
+        
+      
+   
+      
+       f_CreateAlienBullet();
+              
+      
+    function f_MoveSpaceShip()
+       {
+               
+                 if(IsRightKeyActive == 1)
+                     {
+                        SpaceShip.m_Move(6,0);
+                        
+                     }
+                 if(IsLeftKeyActive == 1)
+                     {
+                        SpaceShip.m_Move(-6,0);
+                     }
+                 
+                       
+       }
+      
+      
+                
+      
+      
+      var g_AlienShipSpeed = 3;
+      
+  function f_MoveAlienShip(l_Speed)
+      {
+          
+        if(AlienShip.GridArray[1].Box_Xpos + AlienShip.GridArray[1].Box_Size>= g_Canvas.width || AlienShip.GridArray[1].Box_Xpos + 20 < 0)
+            {
+                g_AlienShipSpeed = -g_AlienShipSpeed;
+            }
+          
+         AlienShip.m_Move(g_AlienShipSpeed,0);
+          
+       
+      }
+     
+      
+      
+      var g_AllAlienSpeedX = 10;
+      var g_AllAlienSpeedY = 0;
+      
+      var g_Index = 0;
+      
+  function f_MoveAllAliens()
+        {
+          if(AlienMovement == 1)
+              {
+                  AlienMovement = 0;
+                  g_AllAlienSpeedY = 0; 
+
+                  for(var i = 0; i < AlienObjArray.length; i++)
+                     {  
+
+                        AlienObjArray[i].m_Move(g_AllAlienSpeedX,g_AllAlienSpeedY);
+                     }
+              }
+      
+         if(AlienSpeedChanger == 26)
+              {
+                   AlienMovement = -1;
+
+                   AlienSpeedChanger = 0;
+                   g_AllAlienSpeedX = -g_AllAlienSpeedX;
+                   g_AllAlienSpeedY = 5; 
+
+                 for(var i = 0; i < AlienObjArray.length; i++)
+                     {  
+                        AlienObjArray[i].m_Move(g_AllAlienSpeedX,g_AllAlienSpeedY);
+                     }
+              }
+         
+        }
+      
+      
+  function f_AlienCollision(l_Array)
+  {
+   for(var j = 0; j< BulletArray.length; j++)
+      {    
+      for(var i = 0; i< AlienObjArray.length; i++)
+            {
+                  
+        if(AlienObjArray[i].IsDestroyed == 0 && BulletArray[j].IsBulletActive == 1)
+              {
+                 if(BulletArray[j].Bullet_Ypos > AlienObjArray[i].GridArray[0].Box_Ypos && 
+                  BulletArray[j].Bullet_Ypos < AlienObjArray[i].GridArray[0].Box_Ypos+AlienObjArray[i].Height &&
+                  BulletArray[j].Bullet_Xpos > AlienObjArray[i].GridArray[0].Box_Xpos &&
+                  BulletArray[j].Bullet_Xpos < AlienObjArray[i].GridArray[0].Box_Xpos+AlienObjArray[i].Width )
+                        {
+                                AlienObjArray[i].BitMapArray = l_Array ;
+                                BulletArray[j].IsBulletActive = 0;
+                                AlienObjArray[i].IsDestroyed = 1 ;
+                                break;
+  
+                        }
+              }
+                  
+           }
+          
+      }
+      
+  }
+      
+      
+  function f_AlienShipCollision()
+      {
+          for(var i = 0; i < BulletArray.length; i++)
+            {
+               if(AlienShip.IsDestroyed == 0 && BulletArray[i].IsBulletActive == 1)
+                    {
+                         if(BulletArray[i].Bullet_Ypos > AlienShip.GridArray[0].Box_Ypos &&   
+                            BulletArray[i].Bullet_Ypos < (AlienShip.GridArray[0].Box_Ypos+AlienShip.Height) && BulletArray[i].Bullet_Xpos > AlienShip.GridArray[0].Box_Xpos &&         BulletArray[i].Bullet_Xpos <(AlienShip.GridArray[0].Box_Xpos+AlienShip.Width))
+                                {
+                                    
+                                      BulletArray[i].IsBulletActive = 0;
+                                      AlienShip.IsDamaged++ ;
+
+                                if(AlienShip.IsDamaged == 1)
+                                    {
+                                        AlienShip.BitMapArray = AlienShip_blast1;
+                                    }
+
+                                if(AlienShip.IsDamaged == 3)
+                                    {
+                                        AlienShip.BitMapArray = AlienShip_blast2;
+                                        AlienShip.IsDestroyed = 1;
+                                    }
+
+                                    break;
+
+                                }
+                    }
+                    
+                    
+            }
+      }
+      
+ function f_BunkersCollision()
+    {
+          
+ for(var j = 0; j< BulletArray.length; j++)
+       {    
+      for(var i = 0; i< Bunker_1.length; i++)
+              { 
+                  if(Bunker_1[i].IsDestroyed == 0 && BulletArray[j].IsBulletActive == 1)
+                      {
+              
+                        if(BulletArray[j].Bullet_Ypos > Bunker_1[i].GridArray[0].Box_Ypos && 
+                           BulletArray[j].Bullet_Ypos < Bunker_1[i].GridArray[0].Box_Ypos+Bunker_1[i].Height &&
+                           BulletArray[j].Bullet_Xpos > Bunker_1[i].GridArray[0].Box_Xpos &&
+                           BulletArray[j].Bullet_Xpos < Bunker_1[i].GridArray[0].Box_Xpos+Bunker_1[i].Width )
+                            {
+                                    
+                                    BulletArray[j].IsBulletActive = 0;
+                                    Bunker_1[i].IsDamaged++ ;
+                                
+                                    if(Bunker_1[i].IsDamaged == 1)
+                                        {
+                                            Bunker_1[i].BitMapArray = ShieldDestroyed1;
+                                        }
+
+                                    if(Bunker_1[i].IsDamaged == 2)
+                                        {
+                                            Bunker_1[i].BitMapArray = ShieldDestroyed2;
+                                        }
+                                    if(Bunker_1[i].IsDamaged == 3)
+                                        {
+                                            Bunker_1[i].BitMapArray = ShieldDestroyed3;
+                                            Bunker_1[i].IsDestroyed = 1;
+                                        }
+                                
+                                    break;
+                            }
+                      }
+
+              }
+          
+      }
+        
+  for(var j = 0; j< BulletArray.length; j++)
+       {    
+      for(var i = 0; i< Bunker_2.length; i++)
+              {
+                  
+                if(Bunker_2[i].IsDestroyed == 0 && BulletArray[j].IsBulletActive == 1)
+                      {
+
+                        if(BulletArray[j].Bullet_Ypos > Bunker_2[i].GridArray[0].Box_Ypos && 
+                           BulletArray[j].Bullet_Ypos < Bunker_2[i].GridArray[0].Box_Ypos+Bunker_2[i].Height &&
+                           BulletArray[j].Bullet_Xpos > Bunker_2[i].GridArray[0].Box_Xpos &&
+                           BulletArray[j].Bullet_Xpos < Bunker_2[i].GridArray[0].Box_Xpos+Bunker_2[i].Width )
+                            {
+                                
+                                    BulletArray[j].IsBulletActive = 0;
+                                    Bunker_2[i].IsDamaged++ ;
+                                
+                                    if(Bunker_2[i].IsDamaged == 1)
+                                        {
+                                            Bunker_2[i].BitMapArray = ShieldDestroyed1;
+                                        }
+
+                                    if(Bunker_2[i].IsDamaged == 2)
+                                        {
+                                            Bunker_2[i].BitMapArray = ShieldDestroyed2;
+                                        }
+                                    if(Bunker_2[i].IsDamaged == 3)
+                                        {
+                                            Bunker_2[i].BitMapArray = ShieldDestroyed3;
+                                            Bunker_2[i].IsDestroyed = 1;
+                                        }
+
+                                    break;
+                                
+                            }
+
+                      }
+                  
+              }
+          
+      }
+        
+ for(var j = 0; j< BulletArray.length; j++)
+       {    
+      for(var i = 0; i< Bunker_3.length; i++)
+              {
+                  
+                if(Bunker_3[i].IsDestroyed == 0 && BulletArray[j].IsBulletActive == 1)
+                      {
+
+                        if(BulletArray[j].Bullet_Ypos > Bunker_3[i].GridArray[0].Box_Ypos && 
+                           BulletArray[j].Bullet_Ypos < Bunker_3[i].GridArray[0].Box_Ypos+Bunker_3[i].Height &&
+                           BulletArray[j].Bullet_Xpos > Bunker_3[i].GridArray[0].Box_Xpos &&
+                           BulletArray[j].Bullet_Xpos < Bunker_3[i].GridArray[0].Box_Xpos+Bunker_3[i].Width )
+                            {
+                                    BulletArray[j].IsBulletActive = 0;
+                                    Bunker_3[i].IsDamaged++ ;
+                                
+                                    if(Bunker_3[i].IsDamaged == 1)
+                                        {
+                                            Bunker_3[i].BitMapArray = ShieldDestroyed1;
+                                        }
+
+                                    if(Bunker_3[i].IsDamaged == 2)
+                                        {
+                                            Bunker_3[i].BitMapArray = ShieldDestroyed2;
+                                        }
+                                    if(Bunker_3[i].IsDamaged == 3)
+                                        {
+                                            Bunker_3[i].BitMapArray = ShieldDestroyed3;
+                                            Bunker_3[i].IsDestroyed = 1;
+                                        }
+
+                                    break;
+
+                            }
+
+                      }
+                  
+              }
+          
+      }
+          
+          
+    }
+      
+      
+      var AlienTimer = 0;
+      var AlienMovement = 0;
+      var AlienSpeedChanger = 0;
+       
+     
+       function f_GameLoop()
+              {
+                   AlienTimer++;
+                  
+                   if(AlienTimer%20 == 0)
+                      {
+                          AlienMovement += 1;
+                          AlienSpeedChanger += 1;
+                      }
+                  
+                 
+                   f_MoveSpaceShip();
+                   f_MoveAlienShip(3);
+                   f_MoveAllAliens();
+                   f_MoveBullet();
+                   f_ClearRect();
+                  
+                   f_AlienCollision(AlienShipDestroy);
+                   f_AlienShipCollision();
+                   f_BunkersCollision();
+                  
+                   f_DrawAllAliens(g_Ctx);
+                   f_DrawBunkers();
+                  
+                   AlienShip.m_DrawGrid(g_Ctx);
+                   SpaceShip.m_DrawGrid(g_Ctx);
+                  
+                   f_DrawBullet();
+              }
+     
+      function f_KeydownEventHandler(l_eventData)
+    {
+        
+      
+        if(l_eventData.keyCode == 68 || l_eventData.keyCode == 39)
+            {
+                 IsRightKeyActive = 1;         
+            }
+        
+     
+        if(l_eventData.keyCode == 65 || l_eventData.keyCode == 37)
+            {  
+                 IsLeftKeyActive = 1;
+            }
+        
+        
+        if(l_eventData.keyCode == 32)
+            {
+                 f_ActiveBullet();
+                    
+            }
+          
+         }
+      
+               
+ function f_KeyupEventHandler(l_eventData)
+    {
+         if(l_eventData.keyCode == 68 || l_eventData.keyCode == 39)
+            {
+                IsRightKeyActive = 0;          
+            }
+        
+         if(l_eventData.keyCode == 65 || l_eventData.keyCode == 37)
+            {  
+                IsLeftKeyActive = 0; 
+            }
+        
+          
+         }
+   
+      
+      var id = setInterval(f_GameLoop,g_TimeInterval)
+      
+      
+    document.addEventListener("keyup",f_KeyupEventHandler); 
+    document.addEventListener("keydown",f_KeydownEventHandler); 
+      
+    
+    </script>
+    
+</html>
+          
